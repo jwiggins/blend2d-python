@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.1 )
 
-project( blend2dpy C CXX )
+project( blend2d_capi C CXX )
 
 # Blend2D
 # -------

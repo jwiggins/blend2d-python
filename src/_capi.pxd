@@ -34,6 +34,43 @@ cdef extern from "blend2d.h":
         size_t start
         size_t end
 
+    cdef enum BLExtendMode:
+        BL_EXTEND_MODE_PAD
+        BL_EXTEND_MODE_REPEAT
+        BL_EXTEND_MODE_REFLECT
+        BL_EXTEND_MODE_PAD_X_PAD_Y
+        BL_EXTEND_MODE_REPEAT_X_REPEAT_Y
+        BL_EXTEND_MODE_REFLECT_X_REFLECT_Y
+        BL_EXTEND_MODE_PAD_X_REPEAT_Y
+        BL_EXTEND_MODE_PAD_X_REFLECT_Y
+        BL_EXTEND_MODE_REPEAT_X_PAD_Y
+        BL_EXTEND_MODE_REPEAT_X_REFLECT_Y
+        BL_EXTEND_MODE_REFLECT_X_PAD_Y
+        BL_EXTEND_MODE_REFLECT_X_REPEAT_Y
+
+    cdef enum BLFormat:
+        BL_FORMAT_NONE
+        BL_FORMAT_PRGB32
+        BL_FORMAT_XRGB32
+        BL_FORMAT_A8
+
+    cdef enum BLGradientType:
+        BL_GRADIENT_TYPE_LINEAR
+        BL_GRADIENT_TYPE_RADIAL
+        BL_GRADIENT_TYPE_CONICAL
+
+    cdef enum BLImplType:
+        BL_IMPL_TYPE_ARRAY_I8
+        BL_IMPL_TYPE_ARRAY_U8
+        BL_IMPL_TYPE_ARRAY_I16
+        BL_IMPL_TYPE_ARRAY_U16
+        BL_IMPL_TYPE_ARRAY_I32
+        BL_IMPL_TYPE_ARRAY_U32
+        BL_IMPL_TYPE_ARRAY_I64
+        BL_IMPL_TYPE_ARRAY_U64
+        BL_IMPL_TYPE_ARRAY_F32
+        BL_IMPL_TYPE_ARRAY_F64
+
     ctypedef struct BLApproximationOptions:
         pass
 
@@ -143,10 +180,16 @@ cdef extern from "blend2d.h":
         pass
 
     ctypedef struct BLRect:
-        pass
+        double x
+        double y
+        double w
+        double h
 
     ctypedef struct BLRectI:
-        pass
+        int x
+        int y
+        int w
+        int h
 
     ctypedef struct BLRegionCore:
         pass

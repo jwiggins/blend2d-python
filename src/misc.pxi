@@ -20,17 +20,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-cimport _capi
+# BLRuntime
+# BLResult blRuntimeInit()
+# BLResult blRuntimeShutdown()
+# BLResult blRuntimeCleanup(uint32_t cleanupFlags)
+# BLResult blRuntimeQueryInfo(uint32_t infoType, void* infoOut)
+# BLResult blRuntimeMessageOut(const char* msg)
+# BLResult blRuntimeMessageFmt(const char* fmt, ...)
+# BLResult blRuntimeMessageVFmt(const char* fmt, va_list ap)
+# uint32_t blRuntimeGetTickCount(void)
+# void blRuntimeAssertionFailure(const char* file, int line, const char* msg)
 
+# IF _WIN32:
+#     BLResult blResultFromWinError(uint32_t e)
+# ELSE:
+#     BLResult blResultFromPosixError(int e)
 
-cdef class Context:
-    """ Context()
-
-    """
-    cdef _capi.BLContextCore _self
-
-    def __cinit__(self):
-        _capi.blContextInit(&self._self)
-
-    def __dealloc__(self):
-        _capi.blContextReset(&self._self)
+# BLVariant
+# BLResult blVariantInit(void* self)
+# BLResult blVariantInitMove(void* self, void* other)
+# BLResult blVariantInitWeak(void* self, const void* other)
+# BLResult blVariantReset(void* self)
+# uint32_t blVariantGetImplType(const void* self)
+# BLResult blVariantAssignMove(void* self, void* other)
+# BLResult blVariantAssignWeak(void* self, const void* other)
+# bool blVariantEquals(const void* a, const void* b)

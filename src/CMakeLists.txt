@@ -11,7 +11,6 @@ endif()
 
 include_directories( ${NUMPY_INCLUDE_DIR} )
 
-cython_add_module( capi capi.pyx )
-target_include_directories(capi BEFORE PRIVATE ${BLEND2D_INCLUDE_DIR})
-target_compile_options(capi PRIVATE ${BLEND2D_CFLAGS})
-target_link_libraries(capi ${BLEND2D_LIBS})
+cython_add_module( _capi _capi.pyx )
+target_include_directories( _capi BEFORE PRIVATE ${BLEND2D_INCLUDE_DIR} )
+target_link_libraries( _capi ${BLEND2D_LIBS} )
