@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run:
           name: Installing other packages
-          command: 'apt-get update && apt-get install -y gcc g++ curl git'
+          command: 'apt-get update && apt-get install -y gcc g++ make curl git'
       - run:
           name: Git Submodules
           command: |
@@ -34,7 +34,7 @@ jobs:
       - checkout
       - run:
           name: Installing other packages
-          command: 'apt-get update && apt-get install -y gcc g++ curl git'
+          command: 'apt-get update && apt-get install -y gcc g++ make curl git'
       - run:
           name: Git Submodules
           command: |
