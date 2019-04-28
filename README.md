@@ -7,7 +7,7 @@ Blend2D Python Extension
 Dependencies
 ------------
 
-* Blend2D and AsmJit sources
 * Numpy
+* Blend2D and AsmJit sources (build-time only)
 * Cython (build-time only)
 * CMake (build-time only)

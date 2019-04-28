@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.1 )
 
-project( blend2d_capi C CXX )
+project( blend2d_python C CXX )
 
 # Blend2D
 # -------
@@ -19,6 +19,8 @@ endif()
 
 # Blend2D Cython Extension
 # ------------------------
+
+set( BLEND2DPY_TARGET_NAME "_capi" CACHE STRING "Name of the extension file")
 
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
 include( UseCython )

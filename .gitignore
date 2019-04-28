@@ -3,7 +3,9 @@
 *.kdev4
 
 build
-build_*
-3rdparty
+*.egg-info/
+__pycache__/
 
+blend2d/*.so
 src/*.c
+*.py[cd]
