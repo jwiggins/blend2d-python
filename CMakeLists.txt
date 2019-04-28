@@ -7,7 +7,7 @@ project( blend2d_python C CXX )
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(BLEND2D_DIR "${CMAKE_CURRENT_LIST_DIR}/../blend2d"
+set(BLEND2D_DIR "${CMAKE_CURRENT_LIST_DIR}/3rdparty/blend2d"
     CACHE PATH "Location of 'blend2d'")
 
 set(BLEND2D_BUILD_STATIC TRUE)
