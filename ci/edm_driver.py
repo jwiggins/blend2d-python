@@ -40,6 +40,7 @@ def install(runtime, environment):
     commands = [
         "edm environments create {environment} --force --version={runtime}",
         "edm install -y -e {environment} {packages}",
+        "edm run -e {environment} -- pip install cmake",
         "edm run -e {environment} -- pip install -e .",
     ]
     click.echo("Creating environment '{environment}'".format(**parameters))
