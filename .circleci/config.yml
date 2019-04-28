@@ -9,9 +9,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Init submodules
-          command: git init submodules
-      - run:
           name: Install edm and dependencies
           command: |
             ./ci/install-edm-linux.sh
@@ -27,9 +24,6 @@ jobs:
       - image: debian:stretch
     steps:
       - checkout
-      - run:
-          name: Init submodules
-          command: git init submodules
       - run:
           name: Install edm and dependencies
           command: |
