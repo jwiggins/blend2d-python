@@ -1,0 +1,7 @@
+[submodule "3rdparty/blend2d"]
+	path = 3rdparty/blend2d
+	url = git@github.com:blend2d/blend2d
+[submodule "3rdparty/asmjit"]
+	path = 3rdparty/asmjit
+	url = git@github.com:asmjit/asmjit
+	branch = next-wip
