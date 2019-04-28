@@ -1,0 +1,47 @@
+version: 2
+jobs:
+  build__PY_27:
+    environment:
+      - INSTALL_EDM_VERSION: "1.11.0"
+      - RUNTIME_VERSION: "2.7"
+    docker:
+      - image: debian:stretch
+    steps:
+      - checkout
+      - run:
+          name: Init submodules
+          command: git init submodules
+      - run:
+          name: Install edm and dependencies
+          command: |
+            ./ci/install-edm-linux.sh
+            ./ci/install-environment.sh
+      - run:
+          name: Run tests
+          command: ./ci/run-tests.sh
+  build__PY_36:
+    environment:
+      - INSTALL_EDM_VERSION: "1.11.0"
+      - RUNTIME_VERSION: "3.6"
+    docker:
+      - image: debian:stretch
+    steps:
+      - checkout
+      - run:
+          name: Init submodules
+          command: git init submodules
+      - run:
+          name: Install edm and dependencies
+          command: |
+            ./ci/install-edm-linux.sh
+            ./ci/install-environment.sh
+      - run:
+          name: Run tests
+          command: ./ci/run-tests.sh
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build__PY_27
+      - build__PY_36
