@@ -13,9 +13,10 @@ include_directories( ${NUMPY_INCLUDE_DIR} )
 
 cython_add_module( _capi _capi.pyx )
 set_target_properties( _capi PROPERTIES OUTPUT_NAME ${BLEND2DPY_TARGET_NAME} )
-
 if(WIN32)
-    set_target_properties( _capi PROPERTIES SUFFIX ".pyd" )
+  set_target_properties( _capi PROPERTIES SUFFIX ".pyd" )
+else()
+  target_compile_options( _capi PUBLIC "-fPIC" )
 endif()
 
 target_include_directories( _capi BEFORE PRIVATE ${BLEND2D_INCLUDE_DIR} )
