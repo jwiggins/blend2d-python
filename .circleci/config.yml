@@ -11,8 +11,9 @@ jobs:
       - run:
           name: Installing Debian packages
           command: |
-            'apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*'
-            'apt-get update && apt-get install -y gcc g++ curl'
+            'apt-get update && apt-get install -y sudo gcc g++ curl && rm -rf /var/lib/apt/lists/*'
+      - run:
+          name: Installing Cmake
             'apt-get update && sudo apt-get install -y cmake'
       - run:
           name: Install edm and dependencies
@@ -33,8 +34,9 @@ jobs:
       - run:
           name: Installing Debian packages
           command: |
-            'apt-get update && apt-get install -y sudo && rm -rf /var/lib/apt/lists/*'
-            'apt-get update && apt-get install -y gcc g++ curl'
+            'apt-get update && apt-get install -y sudo gcc g++ curl && rm -rf /var/lib/apt/lists/*'
+      - run:
+          name: Installing Cmake
             'apt-get update && sudo apt-get install -y cmake'
       - run:
           name: Install edm and dependencies
