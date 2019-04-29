@@ -38,6 +38,7 @@ class cmake_build_ext(build_ext):
                 '-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}'.format(
                     BUILD_TYPE.upper(), extdir),
                 '-DPYTHON_EXECUTABLE={}'.format(sys.executable),
+                '-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON',
             ]
 
             if platform.system() == 'Windows':
