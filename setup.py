@@ -39,6 +39,8 @@ class cmake_build_ext(build_ext):
                     BUILD_TYPE.upper(), extdir),
                 '-DPYTHON_EXECUTABLE={}'.format(sys.executable),
                 '-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON',
+                '-DCMAKE_C_FLAGS=-fPIC',
+                '-DCMAKE_CXX_FLAGS=-fPIC',
             ]
 
             if platform.system() == 'Windows':

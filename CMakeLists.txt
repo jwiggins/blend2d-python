@@ -15,7 +15,6 @@ include("${BLEND2D_DIR}/CMakeLists.txt")
 
 if("${CMAKE_CXX_COMPILER_ID}" MATCHES "^(GNU|Clang|AppleClang)$")
   list(APPEND BLEND2D_CFLAGS "-fvisibility=hidden")
-  list(APPEND BLEND2D_CFLAGS "-fPIC")
 endif()
 
 # Blend2D Cython Extension
