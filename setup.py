@@ -56,6 +56,11 @@ class cmake_build_ext(build_ext):
                     cmake_args += [
                         '-G', 'MinGW Makefiles',
                     ]
+            elif platform.system() == 'Linux':
+                cmake_args += [
+                    '-DCMAKE_C_FLAGS=-fPIC',
+                    '-DCMAKE_CXX_FLAGS=-fPIC',
+                ]
 
             if not op.exists(tmpdir):
                 os.makedirs(tmpdir)
