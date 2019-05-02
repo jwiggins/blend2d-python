@@ -41,7 +41,7 @@ def install(runtime, environment):
         "edm environments create {environment} --force --version={runtime}",
         "edm install -y -e {environment} {packages}",
         "edm run -e {environment} -- pip install cmake",
-        "edm run -e {environment} -- python setup.py develop",
+        "edm run -e {environment} -- pip install -e .",
     ]
     click.echo("Creating environment '{environment}'".format(**parameters))
     execute(commands, parameters)

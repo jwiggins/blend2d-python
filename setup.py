@@ -38,9 +38,6 @@ class cmake_build_ext(build_ext):
                 '-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_{}={}'.format(
                     BUILD_TYPE.upper(), extdir),
                 '-DPYTHON_EXECUTABLE={}'.format(sys.executable),
-                '-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON',
-                '-DCMAKE_C_FLAGS=-fPIC',
-                '-DCMAKE_CXX_FLAGS=-fPIC',
             ]
 
             if platform.system() == 'Windows':
@@ -59,6 +56,11 @@ class cmake_build_ext(build_ext):
                     cmake_args += [
                         '-G', 'MinGW Makefiles',
                     ]
+            elif platform.system() == 'Linux':
+                cmake_args += [
+                    '-DCMAKE_C_FLAGS=-fPIC',
+                    '-DCMAKE_CXX_FLAGS=-fPIC',
+                ]
 
             if not op.exists(tmpdir):
                 os.makedirs(tmpdir)
