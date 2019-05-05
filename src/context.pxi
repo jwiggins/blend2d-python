@@ -115,6 +115,50 @@ cdef class Context:
     def flush(self):
         _capi.blContextFlush(&self._self, 0)
 
+    def reset_matrix(self):
+        """reset_matrix()
+        Resets to the identity transform.
+        """
+        _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_RESET, NULL)
+
+    def scale(self, double x, double y):
+        """scale(x, y)
+        Apply a scaling to the transform
+
+        :param x: The scale factor in X
+        :param y: The scale factor in Y
+        """
+        cdef double *data = [x, y]
+        _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_SCALE, data)
+
+    def rotate(self, double angle):
+        """rotate(angle)
+        Apply a rotation to the transform.
+
+        :param angle: The desired rotation in radians.
+        """
+        _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_ROTATE, &angle)
+
+    def skew(self, double x, double y):
+        """skew(x, y)
+        Apply a skew to the transform.
+
+        :param x: The skew factor in X
+        :param y: The skew factor in Y
+        """
+        cdef double *data = [x, y]
+        _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_SKEW, data)
+
+    def translate(self, double x, double y):
+        """translate(x, y)
+        Apply a translation to the transform.
+
+        :param x: The translation in X
+        :param y: The translation in Y
+        """
+        cdef double *data = [x, y]
+        _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_TRANSLATE, data)
+
     def set_fill_color(self, color):
         cdef uint32_t packed = _get_rgba32_value(color)
         _capi.blContextSetFillStyleRgba32(&self._self, packed)
