@@ -101,3 +101,46 @@ cdef class Path:
     def cubic_to(self, double x_ctrl1, double y_ctrl1,
                  double x_ctrl2, double y_ctrl2, double x_to, double y_to):
         _capi.blPathCubicTo(&self._self, x_ctrl1, y_ctrl1, x_ctrl2, y_ctrl2, x_to, y_to)
+
+    def ellipse(self, double cx, double cy, double rx, double ry):
+        """ellipse(cx, cy, rx, ry)
+        Adds an ellipse to the path.
+
+        :param cx: Center X coordinate of the ellipse
+        :param cy: Center Y coordinate of the ellipse
+        :param rx: Ellipse radii x dimension.
+        :param ry: Ellipse radii y dimension.
+        """
+        # XXX: blPathAddGeometry(..., BL_GEOMETRY_TYPE_ELLIPSE, ...) is broken?
+        cdef:
+            double BL_MATH_KAPPA = 0.55228474983
+            double x0, y0
+            double kx, ky
+
+        x0 = cx
+        y0 = cy
+        kx = rx * BL_MATH_KAPPA
+        ky = ry * BL_MATH_KAPPA
+        _capi.blPathMoveTo(&self._self, x0 + rx, y0)
+        _capi.blPathCubicTo(&self._self, x0 + rx, y0 + ky, x0 + kx, y0 + ry, x0, y0 + ry)
+        _capi.blPathCubicTo(&self._self, x0 - kx, y0 + ry, x0 - rx, y0 + ky, x0 - rx, y0)
+        _capi.blPathCubicTo(&self._self, x0 - rx, y0 - ky, x0 - kx, y0 - ry, x0, y0 - ry)
+        _capi.blPathCubicTo(&self._self, x0 + kx, y0 - ry, x0 + rx, y0 - ky, x0 + rx, y0)
+        _capi.blPathClose(&self._self)
+
+    def rect(self, double x, double y, double width, double height):
+        """rect(x, y, width, height)
+        Adds a rectangle to the path.
+
+        :param x: Rectangle X position
+        :param y: Rectangle Y position
+        :param width: Rectangle widtht
+        :param height: Rectangle height
+        """
+        cdef _capi.BLRect data
+        data.x = x
+        data.y = y
+        data.w = width
+        data.h = height
+        _capi.blPathAddGeometry(&self._self, _capi.BL_GEOMETRY_TYPE_RECTD,
+                                &data, NULL, _capi.BL_GEOMETRY_DIRECTION_NONE)
