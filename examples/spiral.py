@@ -28,7 +28,7 @@ def compute_offsets(maxoffset):
 
 
 def spiral(size, hue, sat, val):
-    array = np.zeros((size[1], size[0], 4), dtype=np.uint8)
+    array = np.empty((size[1], size[0], 4), dtype=np.uint8)
     image = blend2d.Image(array)
     canvas = blend2d.Context(image)
     circle = blend2d.Path()
@@ -45,6 +45,7 @@ def spiral(size, hue, sat, val):
     hsv[:, 0, 2] = np.linspace(val[0], val[1], color_count, endpoint=False)
     spectrum = hsv2rgb(hsv).reshape(color_count, 3)
 
+    canvas.clear()  # fill with black
     for idx, offset in enumerate(offsets):
         canvas.set_fill_color(spectrum[idx])
         canvas.set_stroke_color(spectrum[idx])
@@ -59,6 +60,8 @@ def spiral(size, hue, sat, val):
             canvas.scale(scale, scale)
             canvas.draw_path(circle)
 
+    # BGRA -> RGBA
+    array[:, :, [0, 1, 2]] = array[:, :, [2, 1, 0]]
     imsave('spiral.png', array)
 
 
