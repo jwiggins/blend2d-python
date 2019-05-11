@@ -174,3 +174,17 @@ cdef class Context:
     def draw_path(self, Path path):
         _capi.blContextFillPathD(&self._self, &path._self)
         _capi.blContextStrokePathD(&self._self, &path._self)
+
+    def draw_text(self, position, Font font, text):
+        cdef:
+            bytes utf8_text = _utf8_string(text)
+            char * c_text = utf8_text
+            size_t size = len(utf8_text)
+            _capi.BLPoint point
+
+        point.x = position[0]
+        point.y = position[1]
+        _capi.blContextFillTextD(
+            &self._self, &point, &font._self,
+            c_text, size, _capi.BL_TEXT_ENCODING_UTF8
+        )
