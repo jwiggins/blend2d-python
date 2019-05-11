@@ -116,6 +116,12 @@ cdef extern from "blend2d.h":
         BL_MATRIX2D_OP_POST_ROTATE_PT
         BL_MATRIX2D_OP_POST_TRANSFORM
 
+    cdef enum BLTextEncoding:
+        BL_TEXT_ENCODING_UTF8
+        BL_TEXT_ENCODING_UTF16
+        BL_TEXT_ENCODING_UTF32
+        BL_TEXT_ENCODING_LATIN1
+
     ctypedef struct BLApproximationOptions:
         pass
 
@@ -219,7 +225,8 @@ cdef extern from "blend2d.h":
         pass
 
     ctypedef struct BLPoint:
-        pass
+        double x
+        double y
 
     ctypedef struct BLPointI:
         pass

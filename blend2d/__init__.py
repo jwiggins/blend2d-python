@@ -23,6 +23,6 @@
 from __future__ import absolute_import
 
 from ._capi import (
-    Array, ArrayType, Context, ExtendMode, Format, Gradient, GradientType,
-    Image, Matrix2D, Path, Pattern, Rect, RectI, Region,
+    Array, ArrayType, Context, ExtendMode, Font, Format, Gradient,
+    GradientType, Image, Matrix2D, Path, Pattern, Rect, RectI, Region,
 )
