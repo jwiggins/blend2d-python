@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from cpython.version cimport PY_MAJOR_VERSION
 from libc.stdint cimport uint32_t
 
 cimport _capi
@@ -38,6 +39,16 @@ cdef uint32_t _get_rgba32_value(color):
         alpha = 255
 
     return (alpha << 24) | (r << 16) | (g << 8) | b
+
+cdef bytes _utf8_string(s):
+    if type(s) is unicode:
+        return <bytes>s.encode('utf-8', 'strict')
+    elif PY_MAJOR_VERSION < 3 and isinstance(s, bytes):
+        return <bytes>s
+    elif isinstance(s, unicode):
+        return <bytes>(unicode(s).encode('utf-8', 'strict'))
+    else:
+        raise TypeError('The input should be a string or bytes object')
 
 include "enums.pxi"
 

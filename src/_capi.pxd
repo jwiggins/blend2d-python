@@ -116,6 +116,12 @@ cdef extern from "blend2d.h":
         BL_MATRIX2D_OP_POST_ROTATE_PT
         BL_MATRIX2D_OP_POST_TRANSFORM
 
+    cdef enum BLTextEncoding:
+        BL_TEXT_ENCODING_UTF8
+        BL_TEXT_ENCODING_UTF16
+        BL_TEXT_ENCODING_UTF32
+        BL_TEXT_ENCODING_LATIN1
+
     ctypedef struct BLApproximationOptions:
         pass
 
@@ -219,7 +225,8 @@ cdef extern from "blend2d.h":
         pass
 
     ctypedef struct BLPoint:
-        pass
+        double x
+        double y
 
     ctypedef struct BLPointI:
         pass
@@ -409,7 +416,7 @@ cdef extern from "blend2d.h":
     BLResult blFontFaceAssignMove(BLFontFaceCore* self, BLFontFaceCore* other)
     BLResult blFontFaceAssignWeak(BLFontFaceCore* self, const BLFontFaceCore* other)
     bool blFontFaceEquals(const BLFontFaceCore* a, const BLFontFaceCore* b)
-    BLResult blFontFaceCreateFromFile(BLFontFaceCore* self, const char* fileName)
+    BLResult blFontFaceCreateFromFile(BLFontFaceCore* self, const char* fileName, uint32_t readFlags)
     BLResult blFontFaceCreateFromLoader(BLFontFaceCore* self, const BLFontLoaderCore* loader, uint32_t faceIndex)
     BLResult blFontFaceGetFaceInfo(const BLFontFaceCore* self, BLFontFaceInfo* out)
     BLResult blFontFaceGetDesignMetrics(const BLFontFaceCore* self, BLFontDesignMetrics* out)
@@ -421,7 +428,7 @@ cdef extern from "blend2d.h":
     BLResult blFontLoaderAssignMove(BLFontLoaderCore* self, BLFontLoaderCore* other)
     BLResult blFontLoaderAssignWeak(BLFontLoaderCore* self, const BLFontLoaderCore* other)
     bool blFontLoaderEquals(const BLFontLoaderCore* a, const BLFontLoaderCore* b)
-    BLResult blFontLoaderCreateFromFile(BLFontLoaderCore* self, const char* fileName)
+    BLResult blFontLoaderCreateFromFile(BLFontLoaderCore* self, const char* fileName, uint32_t readFlags)
     BLResult blFontLoaderCreateFromDataArray(BLFontLoaderCore* self, const BLArrayCore* dataArray)
     BLResult blFontLoaderCreateFromData(BLFontLoaderCore* self, const void* data, size_t size, BLDestroyImplFunc destroyFunc, void* destroyData)
     BLFontDataImpl* blFontLoaderDataByFaceIndex(BLFontLoaderCore* self, uint32_t faceIndex)
