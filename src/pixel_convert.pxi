@@ -23,7 +23,8 @@
 # BLPixelConverter
 # BLResult blPixelConverterInit(BLPixelConverterCore* self)
 # BLResult blPixelConverterInitWeak(BLPixelConverterCore* self, const BLPixelConverterCore* other)
+# BLResult blPixelConverterDestroy(BLPixelConverterCore* self)
 # BLResult blPixelConverterReset(BLPixelConverterCore* self)
 # BLResult blPixelConverterAssign(BLPixelConverterCore* self, const BLPixelConverterCore* other)
-# BLResult blPixelConverterCreate(BLPixelConverterCore* self, const BLFormatInfo* dstInfo, const BLFormatInfo* srcInfo)
+# BLResult blPixelConverterCreate(BLPixelConverterCore* self, const BLFormatInfo* dstInfo, const BLFormatInfo* srcInfo, uint32_t createFlags)
 # BLResult blPixelConverterConvert(const BLPixelConverterCore* self, void* dstData, intptr_t dstStride, const void* srcData, intptr_t srcStride, uint32_t w, uint32_t h, const BLPixelConverterOptions* options)

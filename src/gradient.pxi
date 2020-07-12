@@ -23,6 +23,7 @@
 # BLGradient
 # BLResult blGradientInit(BLGradientCore* self)
 # BLResult blGradientInitAs(BLGradientCore* self, uint32_t type, const void* values, uint32_t extendMode, const BLGradientStop* stops, size_t n, const BLMatrix2D* m)
+# BLResult blGradientDestroy(BLGradientCore* self)
 # BLResult blGradientReset(BLGradientCore* self)
 # BLResult blGradientAssignMove(BLGradientCore* self, BLGradientCore* other)
 # BLResult blGradientAssignWeak(BLGradientCore* self, const BLGradientCore* other)
@@ -36,16 +37,16 @@
 # BLResult blGradientSetValues(BLGradientCore* self, size_t index, const double* values, size_t n)
 # uint32_t blGradientGetExtendMode(BLGradientCore* self)
 # BLResult blGradientSetExtendMode(BLGradientCore* self, uint32_t extendMode)
-# const BLGradientStop* blGradientGetStops(const BLGradientCore* self)
 # size_t blGradientGetSize(const BLGradientCore* self)
 # size_t blGradientGetCapacity(const BLGradientCore* self)
+# const BLGradientStop* blGradientGetStops(const BLGradientCore* self)
 # BLResult blGradientResetStops(BLGradientCore* self)
 # BLResult blGradientAssignStops(BLGradientCore* self, const BLGradientStop* stops, size_t n)
 # BLResult blGradientAddStopRgba32(BLGradientCore* self, double offset, uint32_t argb32)
 # BLResult blGradientAddStopRgba64(BLGradientCore* self, double offset, uint64_t argb64)
 # BLResult blGradientRemoveStop(BLGradientCore* self, size_t index)
 # BLResult blGradientRemoveStopByOffset(BLGradientCore* self, double offset, uint32_t all)
-# BLResult blGradientRemoveStops(BLGradientCore* self, const BLRange* range)
+# BLResult blGradientRemoveStops(BLGradientCore* self, size_t rStart, size_t rEnd)
 # BLResult blGradientRemoveStopsFromTo(BLGradientCore* self, double offsetMin, double offsetMax)
 # BLResult blGradientReplaceStopRgba32(BLGradientCore* self, size_t index, double offset, uint32_t rgba32)
 # BLResult blGradientReplaceStopRgba64(BLGradientCore* self, size_t index, double offset, uint64_t rgba64)
@@ -60,7 +61,7 @@ cdef class Gradient:
         _capi.blGradientInit(&self._self)
 
     def __dealloc__(self):
-        _capi.blGradientReset(&self._self)
+        _capi.blGradientDestroy(&self._self)
 
     property type:
         def __get__(self):

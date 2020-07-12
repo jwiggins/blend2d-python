@@ -28,7 +28,6 @@
 # BLResult blRuntimeMessageOut(const char* msg)
 # BLResult blRuntimeMessageFmt(const char* fmt, ...)
 # BLResult blRuntimeMessageVFmt(const char* fmt, va_list ap)
-# uint32_t blRuntimeGetTickCount(void)
 # void blRuntimeAssertionFailure(const char* file, int line, const char* msg)
 
 # IF _WIN32:
@@ -40,6 +39,7 @@
 # BLResult blVariantInit(void* self)
 # BLResult blVariantInitMove(void* self, void* other)
 # BLResult blVariantInitWeak(void* self, const void* other)
+# BLResult blVariantDestroy(void* self)
 # BLResult blVariantReset(void* self)
 # uint32_t blVariantGetImplType(const void* self)
 # BLResult blVariantAssignMove(void* self, void* other)
