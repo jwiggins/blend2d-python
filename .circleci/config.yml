@@ -7,10 +7,13 @@ jobs:
     docker:
       - image: debian:stretch
     steps:
-      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:6XsWO9b2DXwts985D1O6Kk69bXATSr//qtGbng6+apk"
       - run:
           name: Installing other packages
           command: 'apt-get update && apt-get install -y gcc g++ make curl git'
+      - checkout
       - run:
           name: Git Submodules
           command: |
@@ -31,10 +34,13 @@ jobs:
     docker:
       - image: debian:stretch
     steps:
-      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:6XsWO9b2DXwts985D1O6Kk69bXATSr//qtGbng6+apk"
       - run:
           name: Installing other packages
           command: 'apt-get update && apt-get install -y gcc g++ make curl git'
+      - checkout
       - run:
           name: Git Submodules
           command: |
