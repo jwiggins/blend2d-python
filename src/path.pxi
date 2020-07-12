@@ -22,6 +22,7 @@
 
 # BLPath
 # BLResult blPathInit(BLPathCore* self)
+# BLResult blPathDestroy(BLPathCore* self)
 # BLResult blPathReset(BLPathCore* self)
 # size_t blPathGetSize(const BLPathCore* self)
 # size_t blPathGetCapacity(const BLPathCore* self)
@@ -56,6 +57,7 @@
 # BLResult blPathAddTransformedPath(BLPathCore* self, const BLPathCore* other, const BLRange* range, const BLMatrix2D* m)
 # BLResult blPathAddReversedPath(BLPathCore* self, const BLPathCore* other, const BLRange* range, uint32_t reverseMode)
 # BLResult blPathAddStrokedPath(BLPathCore* self, const BLPathCore* other, const BLRange* range, const BLStrokeOptionsCore* options, const BLApproximationOptions* approx)
+# BLResult blPathRemoveRange(BLPathCore* self, const BLRange* range)
 # BLResult blPathTranslate(BLPathCore* self, const BLRange* range, const BLPoint* p)
 # BLResult blPathTransform(BLPathCore* self, const BLRange* range, const BLMatrix2D* m)
 # BLResult blPathFitTo(BLPathCore* self, const BLRange* range, const BLRect* rect, uint32_t fitFlags)
@@ -75,7 +77,7 @@ cdef class Path:
         _capi.blPathInit(&self._self)
 
     def __dealloc__(self):
-        _capi.blPathReset(&self._self)
+        _capi.blPathDestroy(&self._self)
 
     def close(self):
         _capi.blPathClose(&self._self)

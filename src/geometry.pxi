@@ -33,7 +33,11 @@
 
 # BLRegion
 # BLResult blRegionInit(BLRegionCore* self)
+# BLResult blRegionDestroy(BLRegionCore* self)
 # BLResult blRegionReset(BLRegionCore* self)
+# size_t blRegionGetSize(const BLRegionCore* self)
+# size_t blRegionGetCapacity(const BLRegionCore* self)
+# const BLBoxI* blRegionGetData(const BLRegionCore* self)
 # BLResult blRegionClear(BLRegionCore* self)
 # BLResult blRegionShrink(BLRegionCore* self)
 # BLResult blRegionReserve(BLRegionCore* self, size_t n)
@@ -44,10 +48,10 @@
 # BLResult blRegionAssignBoxIArray(BLRegionCore* self, const BLBoxI* data, size_t n)
 # BLResult blRegionAssignRectI(BLRegionCore* self, const BLRectI* rect)
 # BLResult blRegionAssignRectIArray(BLRegionCore* self, const BLRectI* data, size_t n)
-# BLResult blRegionCombine(BLRegionCore* self, const BLRegionCore* a, const BLRegionCore* b, uint32_t op)
-# BLResult blRegionCombineRB(BLRegionCore* self, const BLRegionCore* a, const BLBoxI* b, uint32_t op)
-# BLResult blRegionCombineBR(BLRegionCore* self, const BLBoxI* a, const BLRegionCore* b, uint32_t op)
-# BLResult blRegionCombineBB(BLRegionCore* self, const BLBoxI* a, const BLBoxI* b, uint32_t op)
+# BLResult blRegionCombine(BLRegionCore* self, const BLRegionCore* a, const BLRegionCore* b, uint32_t booleanOp)
+# BLResult blRegionCombineRB(BLRegionCore* self, const BLRegionCore* a, const BLBoxI* b, uint32_t booleanOp)
+# BLResult blRegionCombineBR(BLRegionCore* self, const BLBoxI* a, const BLRegionCore* b, uint32_t booleanOp)
+# BLResult blRegionCombineBB(BLRegionCore* self, const BLBoxI* a, const BLBoxI* b, uint32_t booleanOp)
 # BLResult blRegionTranslate(BLRegionCore* self, const BLRegionCore* r, const BLPointI* pt)
 # BLResult blRegionTranslateAndClip(BLRegionCore* self, const BLRegionCore* r, const BLPointI* pt, const BLBoxI* clipBox)
 # BLResult blRegionIntersectAndClip(BLRegionCore* self, const BLRegionCore* a, const BLRegionCore* b, const BLBoxI* clipBox)
@@ -100,4 +104,4 @@ cdef class Region:
         _capi.blRegionInit(&self._self)
 
     def __dealloc__(self):
-        _capi.blRegionReset(&self._self)
+        _capi.blRegionDestroy(&self._self)

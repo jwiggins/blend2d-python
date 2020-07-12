@@ -20,6 +20,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# BLPattern
+# BLResult blPatternInit(BLPatternCore* self)
+# BLResult blPatternInitAs(BLPatternCore* self, const BLImageCore* image, const BLRectI* area, uint32_t extendMode, const BLMatrix2D* m)
+# BLResult blPatternDestroy(BLPatternCore* self)
+# BLResult blPatternReset(BLPatternCore* self)
+# BLResult blPatternAssignMove(BLPatternCore* self, BLPatternCore* other)
+# BLResult blPatternAssignWeak(BLPatternCore* self, const BLPatternCore* other)
+# BLResult blPatternAssignDeep(BLPatternCore* self, const BLPatternCore* other)
+# BLResult blPatternCreate(BLPatternCore* self, const BLImageCore* image, const BLRectI* area, uint32_t extendMode, const BLMatrix2D* m)
+# BLResult blPatternSetImage(BLPatternCore* self, const BLImageCore* image, const BLRectI* area)
+# BLResult blPatternSetArea(BLPatternCore* self, const BLRectI* area)
+# BLResult blPatternSetExtendMode(BLPatternCore* self, uint32_t extendMode)
+# BLResult blPatternApplyMatrixOp(BLPatternCore* self, uint32_t opType, const void* opData)
+# bool blPatternEquals(const BLPatternCore* a, const BLPatternCore* b)
+
 cdef class Pattern:
     cdef _capi.BLPatternCore _self
     cdef object _image_ref
@@ -32,5 +47,5 @@ cdef class Pattern:
         self._image_ref = image
 
     def __dealloc__(self):
-        _capi.blPatternReset(&self._self)
+        _capi.blPatternDestroy(&self._self)
         self._image_ref = None

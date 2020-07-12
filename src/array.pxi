@@ -22,7 +22,9 @@
 
 # BLArray
 # BLResult blArrayInit(BLArrayCore* self, uint32_t arrayTypeId)
+# BLResult blArrayDestroy(BLArrayCore* self)
 # BLResult blArrayReset(BLArrayCore* self)
+# BLResult blArrayCreateFromData(BLArrayCore* self, void* data, size_t size, size_t capacity, uint32_t dataAccessFlags, BLDestroyImplFunc destroyFunc, void* destroyData)
 # size_t blArrayGetSize(const BLArrayCore* self)
 # size_t blArrayGetCapacity(const BLArrayCore* self)
 # const void* blArrayGetData(const BLArrayCore* self)
@@ -60,9 +62,9 @@
 # BLResult blArrayReplaceF32(BLArrayCore* self, size_t index, float value)
 # BLResult blArrayReplaceF64(BLArrayCore* self, size_t index, double value)
 # BLResult blArrayReplaceItem(BLArrayCore* self, size_t index, const void* item)
-# BLResult blArrayReplaceView(BLArrayCore* self, const BLRange* range, const void* items, size_t n)
+# BLResult blArrayReplaceView(BLArrayCore* self, size_t rStart, size_t rEnd, const void* items, size_t n)
 # BLResult blArrayRemoveIndex(BLArrayCore* self, size_t index)
-# BLResult blArrayRemoveRange(BLArrayCore* self, const BLRange* range)
+# BLResult blArrayRemoveRange(BLArrayCore* self, size_t rStart, size_t rEnd)
 # bool blArrayEquals(const BLArrayCore* a, const BLArrayCore* b)
 
 from libc.stddef cimport size_t
@@ -122,5 +124,5 @@ cdef class Array:
 
     def __dealloc__(self):
         if self._initialized:
-            _capi.blArrayReset(&self._self)
+            _capi.blArrayDestroy(&self._self)
         self._initialized = False

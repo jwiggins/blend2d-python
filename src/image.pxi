@@ -20,6 +20,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# BLImage
+# BLResult blImageInit(BLImageCore* self)
+# BLResult blImageInitAs(BLImageCore* self, int w, int h, uint32_t format)
+# BLResult blImageInitAsFromData(BLImageCore* self, int w, int h, uint32_t format, void* pixelData, intptr_t stride, BLDestroyImplFunc destroyFunc, void* destroyData)
+# BLResult blImageDestroy(BLImageCore* self)
+# BLResult blImageReset(BLImageCore* self)
+# BLResult blImageAssignMove(BLImageCore* self, BLImageCore* other)
+# BLResult blImageAssignWeak(BLImageCore* self, const BLImageCore* other)
+# BLResult blImageAssignDeep(BLImageCore* self, const BLImageCore* other)
+# BLResult blImageCreate(BLImageCore* self, int w, int h, uint32_t format)
+# BLResult blImageCreateFromData(BLImageCore* self, int w, int h, uint32_t format, void* pixelData, intptr_t stride, BLDestroyImplFunc destroyFunc, void* destroyData)
+# BLResult blImageGetData(const BLImageCore* self, BLImageData* dataOut)
+# BLResult blImageMakeMutable(BLImageCore* self, BLImageData* dataOut)
+# BLResult blImageConvert(BLImageCore* self, uint32_t format)
+# bool blImageEquals(const BLImageCore* a, const BLImageCore* b)
+# BLResult blImageScale(BLImageCore* dst, const BLImageCore* src, const BLSizeI* size, uint32_t filter, const BLImageScaleOptions* options)
+
 cdef class Image:
     cdef _capi.BLImageCore _self
     cdef object _array_ref
@@ -39,5 +56,5 @@ cdef class Image:
         self._array_ref = array
 
     def __dealloc__(self):
-        _capi.blImageReset(&self._self)
+        _capi.blImageDestroy(&self._self)
         self._array_ref = None
