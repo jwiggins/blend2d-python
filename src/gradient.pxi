@@ -54,21 +54,12 @@
 # BLResult blGradientApplyMatrixOp(BLGradientCore* self, uint32_t opType, const void* opData)
 # bool blGradientEquals(const BLGradientCore* a, const BLGradientCore* b)
 
+@cython.internal
 cdef class Gradient:
     cdef _capi.BLGradientCore _self
 
-    def __cinit__(self):
-        _capi.blGradientInit(&self._self)
-
     def __dealloc__(self):
         _capi.blGradientDestroy(&self._self)
-
-    property type:
-        def __get__(self):
-            return GradientType(_capi.blGradientGetType(&self._self))
-
-        def __set__(self, GradientType value):
-            _capi.blGradientSetType(&self._self, value)
 
     property extend_mode:
         def __get__(self):
@@ -80,3 +71,42 @@ cdef class Gradient:
     def add_stop(self, float offset, color):
         cdef uint32_t packed = _get_rgba32_value(color)
         _capi.blGradientAddStopRgba32(&self._self, offset, packed)
+
+
+cdef class ConicalGradient(Gradient):
+    def __cinit__(self, double x, double y, double angle):
+        cdef double values[3]
+        values[0] = x
+        values[1] = y
+        values[2] = angle
+
+        _capi.blGradientInit(&self._self)
+        _capi.blGradientSetType(&self._self, _capi.BLGradientType.BL_GRADIENT_TYPE_CONICAL)
+        _capi.blGradientSetValues(&self._self, 0, values, 3)
+
+
+cdef class LinearGradient(Gradient):
+    def __cinit__(self, double x0, double y0, double x1, double y1):
+        cdef double values[4]
+        values[0] = x0
+        values[1] = y0
+        values[2] = x1
+        values[3] = y1
+
+        _capi.blGradientInit(&self._self)
+        _capi.blGradientSetType(&self._self, _capi.BLGradientType.BL_GRADIENT_TYPE_LINEAR)
+        _capi.blGradientSetValues(&self._self, 0, values, 4)
+
+
+cdef class RadialGradient(Gradient):
+    def __cinit__(self, double x0, double y0, double x1, double y1, double radius):
+        cdef double values[5]
+        values[0] = x0
+        values[1] = y0
+        values[2] = x1
+        values[3] = y1
+        values[4] = radius
+
+        _capi.blGradientInit(&self._self)
+        _capi.blGradientSetType(&self._self, _capi.BLGradientType.BL_GRADIENT_TYPE_RADIAL)
+        _capi.blGradientSetValues(&self._self, 0, values, 5)

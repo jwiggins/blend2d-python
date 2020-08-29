@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 from cpython.version cimport PY_MAJOR_VERSION
+import cython
 from libc.stdint cimport uint32_t
 
 cimport _capi

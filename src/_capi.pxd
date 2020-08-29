@@ -34,6 +34,37 @@ cdef extern from "blend2d.h":
         size_t start
         size_t end
 
+    cdef enum BLCompOp:
+        BL_COMP_OP_SRC_OVER
+        BL_COMP_OP_SRC_COPY
+        BL_COMP_OP_SRC_IN
+        BL_COMP_OP_SRC_OUT
+        BL_COMP_OP_SRC_ATOP
+        BL_COMP_OP_DST_OVER
+        BL_COMP_OP_DST_COPY
+        BL_COMP_OP_DST_IN
+        BL_COMP_OP_DST_OUT
+        BL_COMP_OP_DST_ATOP
+        BL_COMP_OP_XOR
+        BL_COMP_OP_CLEAR
+        BL_COMP_OP_PLUS
+        BL_COMP_OP_MINUS
+        BL_COMP_OP_MODULATE
+        BL_COMP_OP_MULTIPLY
+        BL_COMP_OP_SCREEN
+        BL_COMP_OP_OVERLAY
+        BL_COMP_OP_DARKEN
+        BL_COMP_OP_LIGHTEN
+        BL_COMP_OP_COLOR_DODGE
+        BL_COMP_OP_COLOR_BURN
+        BL_COMP_OP_LINEAR_BURN
+        BL_COMP_OP_LINEAR_LIGHT
+        BL_COMP_OP_PIN_LIGHT
+        BL_COMP_OP_HARD_LIGHT
+        BL_COMP_OP_SOFT_LIGHT
+        BL_COMP_OP_DIFFERENCE
+        BL_COMP_OP_EXCLUSION
+
     cdef enum BLExtendMode:
         BL_EXTEND_MODE_PAD
         BL_EXTEND_MODE_REPEAT
