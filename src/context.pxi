@@ -116,6 +116,9 @@ cdef class Context:
     def clear(self):
         _capi.blContextClearAll(&self._self)
 
+    def fill(self):
+        _capi.blContextFillAll(&self._self)
+
     def flush(self):
         _capi.blContextFlush(&self._self, 0)
 
@@ -163,6 +166,9 @@ cdef class Context:
         cdef double *data = [x, y]
         _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_TRANSLATE, data)
 
+    def set_comp_op(self, CompOp op):
+        _capi.blContextSetCompOp(&self._self, op)
+
     def set_fill_color(self, color):
         cdef uint32_t packed = _get_rgba32_value(color)
         _capi.blContextSetFillStyleRgba32(&self._self, packed)
@@ -170,6 +176,12 @@ cdef class Context:
     def set_stroke_color(self, color):
         cdef uint32_t packed = _get_rgba32_value(color)
         _capi.blContextSetStrokeStyleRgba32(&self._self, packed)
+
+    def set_fill_gradient(self, Gradient gradient):
+        _capi.blContextSetFillStyleObject(&self._self, &gradient._self)
+
+    def set_stroke_gradient(self, Gradient gradient):
+        _capi.blContextSetStrokeStyleObject(&self._self, &gradient._self)
 
     def draw_rect(self, Rect rect):
         _capi.blContextFillRectD(&self._self, &rect._self)
