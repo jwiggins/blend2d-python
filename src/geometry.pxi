@@ -67,14 +67,24 @@ cdef class Matrix2D:
     def __cinit__(self):
         _capi.blMatrix2DSetIdentity(&self._self)
 
-    def rotate(self, double cx, double cy, double angle):
-        _capi.blMatrix2DSetRotation(&self._self, angle, cx, cy)
+    def rotate(self, double angle, double cx, double cy):
+        cdef double data[3]
+        data[0] = angle
+        data[1] = cx
+        data[2] = cy
+        _capi.blMatrix2DApplyOp(&self._self, _capi.BLMatrix2DOp.BL_MATRIX2D_OP_ROTATE_PT, data)
 
     def scale(self, double x, double y):
-        _capi.blMatrix2DSetScaling(&self._self, x, y)
+        cdef double data[2]
+        data[0] = x
+        data[1] = y
+        _capi.blMatrix2DApplyOp(&self._self, _capi.BLMatrix2DOp.BL_MATRIX2D_OP_SCALE, data)
 
     def translate(self, double x, double y):
-        _capi.blMatrix2DSetTranslation(&self._self, x, y)
+        cdef double data[2]
+        data[0] = x
+        data[1] = y
+        _capi.blMatrix2DApplyOp(&self._self, _capi.BLMatrix2DOp.BL_MATRIX2D_OP_TRANSLATE, data)
 
 
 cdef class Rect:

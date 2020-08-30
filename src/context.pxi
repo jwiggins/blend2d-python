@@ -116,9 +116,6 @@ cdef class Context:
     def clear(self):
         _capi.blContextClearAll(&self._self)
 
-    def fill(self):
-        _capi.blContextFillAll(&self._self)
-
     def flush(self):
         _capi.blContextFlush(&self._self, 0)
 
@@ -169,29 +166,52 @@ cdef class Context:
     def set_comp_op(self, CompOp op):
         _capi.blContextSetCompOp(&self._self, op)
 
-    def set_fill_color(self, color):
-        cdef uint32_t packed = _get_rgba32_value(color)
+    cdef _apply_gradient_fill(self, Gradient style):
+        _capi.blContextSetFillStyleObject(&self._self, &style._self)
+
+    cdef _apply_gradient_stroke(self, Gradient style):
+        _capi.blContextSetStrokeStyleObject(&self._self, &style._self)
+
+    cdef _apply_pattern_fill(self, Pattern style):
+        _capi.blContextSetFillStyleObject(&self._self, &style._self)
+
+    cdef _apply_pattern_stroke(self, Pattern style):
+        _capi.blContextSetStrokeStyleObject(&self._self, &style._self)
+
+    def set_fill_style(self, style):
+        if isinstance(style, Gradient):
+            self._apply_gradient_fill(style)
+            return
+        elif isinstance(style, Pattern):
+            self._apply_pattern_fill(style)
+            return
+
+        # Assume a plain color style
+        cdef uint32_t packed = _get_rgba32_value(style)
         _capi.blContextSetFillStyleRgba32(&self._self, packed)
 
-    def set_stroke_color(self, color):
-        cdef uint32_t packed = _get_rgba32_value(color)
+    def set_stroke_style(self, style):
+        if isinstance(style, Gradient):
+            self._apply_gradient_stroke(style)
+            return
+        elif isinstance(style, Pattern):
+            self._apply_pattern_stroke(style)
+            return
+
+        # Assume a plain color style
+        cdef uint32_t packed = _get_rgba32_value(style)
         _capi.blContextSetStrokeStyleRgba32(&self._self, packed)
 
-    def set_fill_gradient(self, Gradient gradient):
-        _capi.blContextSetFillStyleObject(&self._self, &gradient._self)
+    def fill_all(self):
+        _capi.blContextFillAll(&self._self)
 
-    def set_stroke_gradient(self, Gradient gradient):
-        _capi.blContextSetStrokeStyleObject(&self._self, &gradient._self)
-
-    def draw_rect(self, Rect rect):
+    def fill_rect(self, Rect rect):
         _capi.blContextFillRectD(&self._self, &rect._self)
-        _capi.blContextStrokeRectD(&self._self, &rect._self)
 
-    def draw_path(self, Path path):
+    def fill_path(self, Path path):
         _capi.blContextFillPathD(&self._self, &path._self)
-        _capi.blContextStrokePathD(&self._self, &path._self)
 
-    def draw_text(self, position, Font font, text):
+    def fill_text(self, position, Font font, text):
         cdef:
             bytes utf8_text = _utf8_string(text)
             char * c_text = utf8_text
@@ -201,6 +221,26 @@ cdef class Context:
         point.x = position[0]
         point.y = position[1]
         _capi.blContextFillTextD(
+            &self._self, &point, &font._self,
+            c_text, size, _capi.BL_TEXT_ENCODING_UTF8
+        )
+
+    def stroke_rect(self, Rect rect):
+        _capi.blContextStrokeRectD(&self._self, &rect._self)
+
+    def stroke_path(self, Path path):
+        _capi.blContextStrokePathD(&self._self, &path._self)
+
+    def stroke_text(self, position, Font font, text):
+        cdef:
+            bytes utf8_text = _utf8_string(text)
+            char * c_text = utf8_text
+            size_t size = len(utf8_text)
+            _capi.BLPoint point
+
+        point.x = position[0]
+        point.y = position[1]
+        _capi.blContextStrokeTextD(
             &self._self, &point, &font._self,
             c_text, size, _capi.BL_TEXT_ENCODING_UTF8
         )
