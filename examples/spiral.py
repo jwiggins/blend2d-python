@@ -47,8 +47,7 @@ def spiral(size, hue, sat, val):
 
     canvas.clear()  # fill with black
     for idx, offset in enumerate(offsets):
-        canvas.set_fill_color(spectrum[idx])
-        canvas.set_stroke_color(spectrum[idx])
+        canvas.set_fill_style(spectrum[idx])
         radius = np.pi * offset / CIRCLE_COUNT
         scale = radius / CIRCLE_SIZE
         for i in range(CIRCLE_COUNT):
@@ -58,7 +57,7 @@ def spiral(size, hue, sat, val):
             canvas.translate(size[0]/2 + offset*centers[i, 0],
                              size[1]/2 + offset*centers[i, 1])
             canvas.scale(scale, scale)
-            canvas.draw_path(circle)
+            canvas.fill_path(circle)
 
     # BGRA -> RGBA
     array[:, :, [0, 1, 2]] = array[:, :, [2, 1, 0]]
