@@ -244,6 +244,24 @@ cdef class Context:
     def set_stroke_width(self, float width):
         _capi.blContextSetStrokeWidth(&self._self, width)
 
+    def blit_image(self, position, Image img, Rect img_area):
+        cdef:
+            _capi.BLPoint point
+            _capi.BLRectI rect
+
+        point.x = position[0]; point.y = position[1]
+        rect.x = <int>img_area._self.x; rect.y = <int>img_area._self.y
+        rect.w = <int>img_area._self.w; rect.h = <int>img_area._self.h
+        _capi.blContextBlitImageD(&self._self, &point, &img._self, &rect)
+
+    def blit_scaled_image(self, Rect rect, Image img, Rect img_area):
+        cdef:
+            _capi.BLRectI dst_rect
+
+        dst_rect.x = <int>img_area._self.x; dst_rect.y = <int>img_area._self.y
+        dst_rect.w = <int>img_area._self.w; dst_rect.h = <int>img_area._self.h
+        _capi.blContextBlitScaledImageD(&self._self, &rect._self, &img._self, &dst_rect)
+
     def fill_all(self):
         _capi.blContextFillAll(&self._self)
 
