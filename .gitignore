@@ -9,3 +9,4 @@ __pycache__/
 blend2d/*.so
 src/*.c
 *.py[cd]
+*.png
