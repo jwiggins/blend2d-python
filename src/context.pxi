@@ -113,11 +113,35 @@ cdef class Context:
         _capi.blContextDestroy(&self._self)
         self._image_ref = None
 
+    def __enter__(self):
+        # Push the state when entering a context
+        self.save()
+
+    def __exit__(self, *args):
+        # Pop the state when exiting
+        self.restore()
+
     def clear(self):
+        """ Clear the image
+        """
         _capi.blContextClearAll(&self._self)
 
     def flush(self):
+        """ Flush any pending drawing operations.
+        """
         _capi.blContextFlush(&self._self, 0)
+
+    def restore(self):
+        """ Pop the current state off the stack.
+        """
+        _capi.blContextRestore(&self._self, NULL)
+
+    def save(self):
+        """ Push the current state onto the stack.
+        """
+        # XXX: It's not clear to me how the BLContextCookie argument is meant
+        # to be used, so I'm leaving it out for now.
+        _capi.blContextSave(&self._self, NULL)
 
     def reset_matrix(self):
         """reset_matrix()
@@ -163,6 +187,9 @@ cdef class Context:
         cdef double *data = [x, y]
         _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_TRANSLATE, data)
 
+    def set_alpha(self, float alpha):
+        _capi.blContextSetGlobalAlpha(&self._self, alpha)
+
     def set_comp_op(self, CompOp op):
         _capi.blContextSetCompOp(&self._self, op)
 
@@ -190,6 +217,18 @@ cdef class Context:
         cdef uint32_t packed = _get_rgba32_value(style)
         _capi.blContextSetFillStyleRgba32(&self._self, packed)
 
+    def set_stroke_cap(self, StrokeCapPosition position, StrokeCap cap):
+        _capi.blContextSetStrokeCap(&self._self, position, cap)
+
+    def set_stroke_caps(self, StrokeCap cap):
+        _capi.blContextSetStrokeCaps(&self._self, cap)
+
+    def set_stroke_join(self, StrokeJoin join):
+        _capi.blContextSetStrokeJoin(&self._self, join)
+
+    def set_stroke_miter_limit(self, float value):
+        _capi.blContextSetStrokeMiterLimit(&self._self, value)
+
     def set_stroke_style(self, style):
         if isinstance(style, Gradient):
             self._apply_gradient_stroke(style)
@@ -201,6 +240,9 @@ cdef class Context:
         # Assume a plain color style
         cdef uint32_t packed = _get_rgba32_value(style)
         _capi.blContextSetStrokeStyleRgba32(&self._self, packed)
+
+    def set_stroke_width(self, float width):
+        _capi.blContextSetStrokeWidth(&self._self, width)
 
     def fill_all(self):
         _capi.blContextFillAll(&self._self)
