@@ -147,6 +147,25 @@ cdef extern from "blend2d.h":
         BL_MATRIX2D_OP_POST_ROTATE_PT
         BL_MATRIX2D_OP_POST_TRANSFORM
 
+    cdef enum BLStrokeCap:
+        BL_STROKE_CAP_BUTT
+        BL_STROKE_CAP_SQUARE
+        BL_STROKE_CAP_ROUND
+        BL_STROKE_CAP_ROUND_REV
+        BL_STROKE_CAP_TRIANGLE
+        BL_STROKE_CAP_TRIANGLE_REV
+
+    cdef enum BLStrokeCapPosition:
+        BL_STROKE_CAP_POSITION_START
+        BL_STROKE_CAP_POSITION_END
+
+    cdef enum BLStrokeJoin:
+        BL_STROKE_JOIN_MITER_CLIP
+        BL_STROKE_JOIN_MITER_BEVEL
+        BL_STROKE_JOIN_MITER_ROUND
+        BL_STROKE_JOIN_BEVEL
+        BL_STROKE_JOIN_ROUND
+
     cdef enum BLTextEncoding:
         BL_TEXT_ENCODING_UTF8
         BL_TEXT_ENCODING_UTF16
