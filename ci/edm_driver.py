@@ -1,6 +1,6 @@
 #
 #  Copyright (c) 2017, Enthought, Inc.
-#  Copyright (c) 2019, John Wiggins
+#  Copyright (c) 2019-2021 John Wiggins
 #  All rights reserved.
 #
 #  This software is provided without warranty under the terms of the BSD
@@ -17,10 +17,13 @@ import sys
 
 import click
 
-dependencies = {
+DEPENDENCIES = {
     'cython',
     'numpy',
 }
+CONFIG_FILE = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '.edm.yaml')
+)
 
 
 @click.group()
@@ -35,11 +38,11 @@ def install(runtime, environment):
     """ Install project and dependencies into a clean EDM environment.
     """
     parameters = get_parameters(runtime, environment)
-    parameters['packages'] = ' '.join(dependencies)
+    parameters['packages'] = ' '.join(DEPENDENCIES)
     # edm commands to setup the development environment
     commands = [
-        "edm environments create {environment} --force --version={runtime}",
-        "edm install -y -e {environment} {packages}",
+        "{edm} environments create {environment} --force --version={runtime}",
+        "{edm} install -y -e {environment} {packages}",
         "edm run -e {environment} -- pip install cmake",
         "edm run -e {environment} -- pip install -e .",
     ]
@@ -88,7 +91,11 @@ def cleanup(runtime, environment):
 
 def get_parameters(runtime, environment):
     """ Set up parameters dictionary for format() substitution """
-    parameters = {'runtime': runtime, 'environment': environment}
+    parameters = {
+        'runtime': runtime,
+        'environment': environment,
+        'edm': 'edm --config {}'.format(CONFIG_FILE),
+    }
     if environment is None:
         parameters['environment'] = 'blend2d-{runtime}'.format(**parameters)
     return parameters
@@ -96,7 +103,7 @@ def get_parameters(runtime, environment):
 
 def execute(commands, parameters):
     for command in commands:
-        print "[EXECUTING]", command.format(**parameters)
+        click.echo("[EXECUTING]" + command.format(**parameters))
         try:
             subprocess.check_call(command.format(**parameters).split())
         except subprocess.CalledProcessError:
