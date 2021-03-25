@@ -10,7 +10,7 @@ jobs:
   test-with-edm:
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     env:
       # Set root directory, mainly for Windows, so that the EDM Python
