@@ -31,6 +31,7 @@ class cmake_build_ext(build_ext):
             extfile = op.splitext(op.basename(extpath))[0]
             tmpdir = self.build_temp
             cmake_args = [
+                '-DBLEND2D_STATIC=TRUE',
                 '-DBLEND2DPY_TARGET_NAME={}'.format(extfile),
                 '-DCMAKE_BUILD_TYPE={}'.format(BUILD_TYPE),
                 '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(
