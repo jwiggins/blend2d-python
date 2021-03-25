@@ -20,6 +20,8 @@ jobs:
       EDM_ROOT_DIRECTORY: ${{ github.workspace }}/.edm
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: 'true'
       - name: Setup EDM
         uses: enthought/setup-edm-action@v1
         with:
