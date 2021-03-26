@@ -31,11 +31,12 @@ cdef void _destroy_array_data(void* impl, void* destroyData):
 
 cdef uint32_t _get_rgba32_value(color):
     cdef uint32_t r, g, b, alpha
+
     r = 255 * color[0]
     g = 255 * color[1]
     b = 255 * color[2]
     if len(color) > 3:
-        alpha = 255 * color[4]
+        alpha = 255 * color[3]
     else:
         alpha = 255
 
