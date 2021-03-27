@@ -179,7 +179,10 @@ cdef extern from "blend2d.h":
         pass
 
     ctypedef struct BLBox:
-        pass
+        double x0
+        double y0
+        double x1
+        double y1
 
     ctypedef struct BLBoxI:
         pass

@@ -121,10 +121,15 @@ cdef class Context:
         # Pop the state when exiting
         self.restore()
 
-    def clear(self):
-        """ Clear the image
+    def clear_all(self):
+        """ Clear everything
         """
         _capi.blContextClearAll(&self._self)
+
+    def fill_all(self):
+        """ Fill the entire image with the fill style
+        """
+        _capi.blContextFillAll(&self._self)
 
     def flush(self):
         """ Flush any pending drawing operations.
@@ -143,11 +148,49 @@ cdef class Context:
         # to be used, so I'm leaving it out for now.
         _capi.blContextSave(&self._self, NULL)
 
+    def clip_to_rect(self, Rect clip):
+        """clip_to_rect(rect)
+        """
+        _capi.blContextClipToRectD(&self._self, &clip._self)
+
+    def restore_clipping(self):
+        _capi.blContextRestoreClipping(&self._self)
+
     def reset_matrix(self):
         """reset_matrix()
         Resets to the identity transform.
         """
         _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_RESET, NULL)
+
+    def meta_matrix(self):
+        """meta_matrix()
+        Return the meta matrix
+        """
+        cdef Matrix2D mat = Matrix2D()
+        _capi.blContextGetMetaMatrix(&self._self, &mat._self)
+        return mat
+
+    def user_matrix(self):
+        """user_matrix()
+        Return the user matrix
+        """
+        cdef Matrix2D mat = Matrix2D()
+        _capi.blContextGetUserMatrix(&self._self, &mat._self)
+        return mat
+
+    def user_to_meta(self):
+        """user_to_meta()
+        Store the result of combining the current `MetaMatrix` and `UserMatrix`
+        to `MetaMatrix` and reset `UserMatrix` to identity as shown below:
+
+            MetaMatrix = MetaMatrix x UserMatrix
+            UserMatrix = Identity
+
+        Please note that this operation is irreversible. The only way to restore
+        both matrices to the state before the call to `user_to_meta()` is to use
+        `save()` and `restore()` functions.
+        """
+        _capi.blContextUserToMeta(&self._self)
 
     def scale(self, double x, double y):
         """scale(x, y)
@@ -187,6 +230,22 @@ cdef class Context:
         cdef double *data = [x, y]
         _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_TRANSLATE, data)
 
+    def transform(self, Matrix2D mat):
+        """transform(matrix)
+        Pre-multiply the transform by another matrix
+
+        :param matrix: A Matrix2D instance
+        """
+        _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_TRANSFORM, &mat._self)
+
+    def post_transform(self, Matrix2D mat):
+        """post_transform(matrix)
+        Post-multiply the transform by another matrix
+
+        :param matrix: A Matrix2D instance
+        """
+        _capi.blContextMatrixOp(&self._self, _capi.BL_MATRIX2D_OP_POST_TRANSFORM, &mat._self)
+
     def set_alpha(self, float alpha):
         _capi.blContextSetGlobalAlpha(&self._self, alpha)
 
@@ -222,6 +281,12 @@ cdef class Context:
 
     def set_stroke_caps(self, StrokeCap cap):
         _capi.blContextSetStrokeCaps(&self._self, cap)
+
+    def set_stroke_dash_array(self, Array arr):
+        _capi.blContextSetStrokeDashArray(&self._self, &arr._self)
+
+    def set_stroke_dash_offset(self, double offset):
+        _capi.blContextSetStrokeDashOffset(&self._self, offset)
 
     def set_stroke_join(self, StrokeJoin join):
         _capi.blContextSetStrokeJoin(&self._self, join)
