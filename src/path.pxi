@@ -79,23 +79,44 @@ cdef class Path:
     def __dealloc__(self):
         _capi.blPathDestroy(&self._self)
 
-    def close(self):
-        _capi.blPathClose(&self._self)
+    def copy(self):
+        cdef Path path = Path()
+        _capi.blPathAssignDeep(&path._self, &self._self)
+        return path
 
-    def reset(self):
+    def clear(self):
         _capi.blPathClear(&self._self)
 
-    def add_path(self, Path other):
-        cdef _capi.BLRange rng
-        rng.start = 0
-        rng.end = 1  # XXX: What should this be?
-        _capi.blPathAddPath(&self._self, &other._self, &rng)
+    def empty(self):
+        return _capi.blPathGetSize(&self._self) == 0
+
+    def get_bounding_box(self):
+        cdef:
+            _capi.BLBox boxOut
+            double w, h
+
+        _capi.blPathGetBoundingBox(&self._self, &boxOut)
+        w = boxOut.x1 - boxOut.x0
+        h = boxOut.y1 - boxOut.y0
+        return Rect(boxOut.x0, boxOut.y0, w, h)
+
+    def get_last_vertex(self):
+        cdef _capi.BLPoint vtxOut
+        _capi.blPathGetLastVertex(&self._self, &vtxOut)
+        return (vtxOut.x, vtxOut.y)
+
+    def close(self):
+        _capi.blPathClose(&self._self)
 
     def move_to(self, double x, double y):
         _capi.blPathMoveTo(&self._self, x, y)
 
     def line_to(self, double x, double y):
         _capi.blPathLineTo(&self._self, x, y)
+
+    def arc_to(self, double cx, double cy, double rx, double ry,
+               double start, double sweep, bool forceMoveTo=False):
+        blPathArcTo(&self._self, cx, cy, rx, ry, start, sweep, forceMoveTo)
 
     def quadric_to(self, double x_ctrl, double y_ctrl, double x_to, double y_to):
         _capi.blPathQuadTo(&self._self, x_ctrl, y_ctrl, x_to, y_to)
@@ -104,8 +125,16 @@ cdef class Path:
                  double x_ctrl2, double y_ctrl2, double x_to, double y_to):
         _capi.blPathCubicTo(&self._self, x_ctrl1, y_ctrl1, x_ctrl2, y_ctrl2, x_to, y_to)
 
-    def ellipse(self, double cx, double cy, double rx, double ry):
-        """ellipse(cx, cy, rx, ry)
+    def arc_quadrant_to(self, double x1, double y1, double x2, double y2):
+        _capi.blPathArcQuadrantTo(&self._self, x1, y1, x2, y2)
+
+    def elliptic_arc_to(self, double rx, double ry, double xAxisRotation,
+                        bool largeArcFlag, bool sweepFlag, double x1, double y1):
+        _capi.blPathEllipticArcTo(&self._self, rx, ry, xAxisRotation,
+                                  largeArcFlag, sweepFlag, x1, y1)
+
+    def add_ellipse(self, double cx, double cy, double rx, double ry):
+        """add_ellipse(cx, cy, rx, ry)
         Adds an ellipse to the path.
 
         :param cx: Center X coordinate of the ellipse
@@ -130,8 +159,8 @@ cdef class Path:
         _capi.blPathCubicTo(&self._self, x0 + kx, y0 - ry, x0 + rx, y0 - ky, x0 + rx, y0)
         _capi.blPathClose(&self._self)
 
-    def rect(self, double x, double y, double width, double height):
-        """rect(x, y, width, height)
+    def add_rect(self, double x, double y, double width, double height):
+        """add_rect(x, y, width, height)
         Adds a rectangle to the path.
 
         :param x: Rectangle X position
@@ -146,3 +175,9 @@ cdef class Path:
         data.h = height
         _capi.blPathAddGeometry(&self._self, _capi.BL_GEOMETRY_TYPE_RECTD,
                                 &data, NULL, _capi.BL_GEOMETRY_DIRECTION_NONE)
+
+    def add_path(self, Path other):
+        cdef _capi.BLRange rng
+        rng.start = 0
+        rng.end = 1  # XXX: What should this be?
+        _capi.blPathAddPath(&self._self, &other._self, &rng)
